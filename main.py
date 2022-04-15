@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 
 app = Flask(__name__)
@@ -9,8 +9,15 @@ def root():
     return 'Hello world!'
 
 
-@app.route('<operator>:string/<num1>:int/<num2>:int')
+@app.route('/<operator>/<num1>/<num2>')
 def calculate(operator, num1, num2):
+
+    try:
+        num1 = int(num1)
+        num2 = int(num2)
+    except ValueError:
+        return 'Not numbers'
+
     match operator:
         case 'add':
             return str(num1 + num2)

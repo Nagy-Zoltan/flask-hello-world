@@ -4,6 +4,13 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
+@app.before_request
+def filter_non_python():
+    user_agent = request.headers['User-Agent']
+    if not user_agent.startswith('python-requests'):
+        return 'Only python requests is allowed', 403
+
+
 @app.route('/')
 def root():
     return 'Hello world!'
